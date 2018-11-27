@@ -69,9 +69,9 @@ Google 爸爸同样发布了一系列软件架构的示例参考 👉  [android-
 这是官方文档上对 ViewModel 如何工作的示意图 👇
 
 <div style="background:white">
-<img src="https://developer.android.com/images/topic/libraries/architecture/viewmodel-lifecycle.png" alt="Illustrates the lifecycle of a ViewModel as an activity changes state." />
-<img src="https://developer.android.com/images/topic/libraries/architecture/viewmodel-loader.png" />
-<img src="https://developer.android.com/images/topic/libraries/architecture/viewmodel-replace-loader.png" />
+<img src="http://pic.ffsky.net/images/2018/11/27/9ad50f26af937fd6731d13f327b1a930.png" alt="Illustrates the lifecycle of a ViewModel as an activity changes state." />
+<img src="http://pic.ffsky.net/images/2018/11/27/e2367f4091012a8eeaf42352dceee7c9.png" alt="viewmodel-loader" />
+<img src="http://pic.ffsky.net/images/2018/11/27/23294c647338dbebd78a55684320f56c.png" alt="viewmodel-replace-loader" />
 </div>
 <p>
 
@@ -111,7 +111,7 @@ public abstract class ViewModel {
 
 要使用 `ViewModel` 来管理数据，首先需要声明一个 model 类来集成 __android.arch.lifecycle.ViewModel__
 ```Kotlin
-class SimpleModel : ViewModel() {
+class SampleModel : ViewModel() {
 
     var profile: UserInfo? = null
 
@@ -129,12 +129,141 @@ class SimpleModel : ViewModel() {
 </div>
 
 ```Kotlin
-class SimpleActivity : AppCompatActivity() {
+class SampleActivity : AppCompatActivity() {
 
     val viewModel by lazy { ViewModelProviders.of(activity).get(SimpleModel::class.java) }
     …
 }
 ```
 
-这段代码在需要使用到 viewmodel 的时候通过 __ViewModelProfiders#of(FragmentActivity)__ 来创建一个 `ViewModelProfider`，然后调用 `get` 方法创建出所需要的 `model` 实例  
-非常简单地代码
+这段代码在需要使用到 viewmodel 的时候通过 __ViewModelProfiders#of(FragmentActivity)__ 来创建一个 `ViewModelProvider`，然后调用 `get` 方法创建出所需要的 `model` 实例  
+非常简单地代码，到这里 viewmodel 看上去好像已经说完了  
+…  
+盐鹅怎么可能呢，讲到这里好像跟 `MVVM` 还是没什么太大的关系  
+那么这里需要介绍 __Jetpack Architecture__ 的另一个重要的组件 __LiveData__ 了  
+
+## LiveData
+
+还是先看官方说明
+> LiveData is an observable data holder class. Unlike a regular observable, LiveData is lifecycle-aware, meaning it respects the lifecycle of other app components, such as activities, fragments, or services. 
+> This awareness ensures LiveData only updates app component observers that are in an active lifecycle state.
+
+这里已经清晰的介绍了 LiveData 是一个可观察的数据持有类，而且跟普通的观察者不一样的地方在于  
+LiveData 可以感知 Android 系统组件生命周期，并且只在观察者组件处于活跃状态的时候才通知更新  
+
+看到这里是不是就想起来前面说的数据绑定操作？
+没错，这样代码就变成了介个样子
+```Kotlin
+class SampleModel : ViewModel() {
+    val profileData = MutableLiveData<UserInfo>()
+
+    var profile: UserInfo? = null
+
+    override fun onCleared() {
+        profile = null
+    }
+
+    fun fetchUserInfo() {
+        …
+        // 网络或本地持久化数据获取用户信息
+        …
+        // 获取成功后使用 LiveData 通知订阅端
+        profileData.postValue(profile)
+    }
+}
+
+class SampleActivity : AppCompatActivity() {
+
+    val viewModel by lazy { ViewModelProviders.of(activity).get(SampleModel::class.java) }
+    …
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        …
+        viewModel.profileData.observe(this, Observer {
+            it?.also {
+                // it -> 接收到的 UserInfo
+                …
+                …
+                /* 更新 UI */
+            }
+        })
+    }
+}
+```
+
+这样一来，`ViewModel` 只需要扮演数据持有者以及相关业务控制器，不用像 __Presenter__ 那样需要关心 __View__ 层的接口变化了，而且能够有效避免因 __Presenter__ 持有 __View__ 引用造成的内存泄漏问题
+
+这里简单看一下 `LiveData` 的代码
+```Java
+/**
+     * Posts a task to a main thread to set the given value. So if you have a following code
+     * executed in the main thread:
+     * <pre class="prettyprint">
+     * liveData.postValue("a");
+     * liveData.setValue("b");
+     * </pre>
+     * The value "b" would be set at first and later the main thread would override it with
+     * the value "a".
+     * <p>
+     * If you called this method multiple times before a main thread executed a posted task, only
+     * the last value would be dispatched.
+     *
+     * @param value The new value
+     */
+    protected void postValue(T value) {
+        boolean postTask;
+        synchronized (mDataLock) {
+            postTask = mPendingData == NOT_SET;
+            mPendingData = value;
+        }
+        if (!postTask) {
+            return;
+        }
+        ArchTaskExecutor.getInstance().postToMainThread(mPostValueRunnable);
+    }
+
+    /**
+     * Sets the value. If there are active observers, the value will be dispatched to them.
+     * <p>
+     * This method must be called from the main thread. If you need set a value from a background
+     * thread, you can use {@link #postValue(Object)}
+     *
+     * @param value The new value
+     */
+    @MainThread
+    protected void setValue(T value) {
+        assertMainThread("setValue");
+        mVersion++;
+        mData = value;
+        dispatchingValue(null);
+    }
+```
+可以看出 LiveData 通过设置 value 来驱动数据变化事件，内部通过分发新的 data 通知到订阅者（通常是UI界面的数据渲染代码）  
+这里有两个相关的方法：`setValue` 以及 `postValue`  
+查看 `postValue` 方法最后一行可以看出通过 post 来改变数据时，内部会通过一个任务调度器来事件分发到主线程，  
+而 `setValue` 方法通过注解声明以及首行的断言检查可知，此方法需要在主线程中调用，这意味着订阅的 Observer __始终会在主线程中响应__
+
+这两个方法的可见性修饰是 `protected`，意味着开发者不能直接调用，所以 __LiveData__ 提供了一个子类 `MutableLiveData`
+```Java
+/**
+ * {@link LiveData} which publicly exposes {@link #setValue(T)} and {@link #postValue(T)} method.
+ *
+ * @param <T> The type of data hold by this instance
+ */
+public class MutableLiveData<T> extends LiveData<T> {
+    @Override
+    public void postValue(T value) {
+        super.postValue(value);
+    }
+
+    @Override
+    public void setValue(T value) {
+        super.setValue(value);
+    }
+}
+```
+代码非常简单，只是单纯的修改了这个两个更新数据的方法的修饰，暴露给了开发者调用  
+当我们需要改变数据的时候只需要调用一下 `postValue` 方法就可以通知视图订阅来更新视图显示的内容和状态了，就像 __React__ 中 对 `props` 和 `stat` 赋值一样简单
+
+所以 … 赶紧开始拥抱、以及享受 __ViewModel__ + __LiveData__ 带来的便捷吧
