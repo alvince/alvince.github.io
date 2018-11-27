@@ -10,6 +10,9 @@
 
     <!--Description-->
     
+        <meta name="description" content="Android 开发近年越来越趋于成熟稳定，很多第三方组件也越来越完善，上半年 Google 爸爸发布了名为 Jetpack 的工具包堪称应用开发者的福音，这里就讨论一下这个开发套件中 ViewModel 到底是个什么样的存在。
+什么是 Jetpack先说一下 Jetpack，官方对此介绍是帮助开发">
+    
 
     <!--Author-->
     
@@ -18,7 +21,7 @@
 
     <!--Open Graph Title-->
     
-        <meta property="og:title" content="Hexo">
+        <meta property="og:title" content="Android-ViewModel 使用指北">
     
 
     <!--Open Graph Description-->
@@ -29,7 +32,7 @@
 
     <!--Type page-->
     
-        <meta property="og:type" content="website">
+        <meta property="og:type" content="article">
     
 
     <!--Page Cover-->
@@ -40,7 +43,7 @@
 
     <!-- Title -->
     
-    <title>Hexo</title>
+    <title>Android-ViewModel 使用指北 - Hexo</title>
 
     <!-- Bootstrap Core CSS -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -135,17 +138,14 @@
     <div class="logo">
         <a href="/"><i class="logo-icon fa fa-cube" aria-hidden="true"></i></a>
         
-            <h1 id="main-title" class="title">Hexo</h1>
-        
     </div>
 </header>
 
         <section class="main">
             
-                
 <div class="post">
 
-    <div class="post-header index">
+    <div class="post-header">
         <h1 class="title">
             <a href="/2018/11/26/android-view-model/">
                 Android-ViewModel 使用指北
@@ -160,9 +160,13 @@
         </div>
     </div>
 
-    
-        <div class="content">
-            <p><code>Android</code> 开发近年越来越趋于成熟稳定，很多第三方组件也越来越完善，上半年 <code>Google</code> 爸爸发布了名为 <code>Jetpack</code> 的工具包堪称应用开发者的福音，这里就讨论一下这个开发套件中 <code>ViewModel</code> 到底是个什么样的存在。</p>
+    <div class="content">
+
+        <!-- Gallery -->
+        
+
+        <!-- Post Content -->
+        <p><code>Android</code> 开发近年越来越趋于成熟稳定，很多第三方组件也越来越完善，上半年 <code>Google</code> 爸爸发布了名为 <code>Jetpack</code> 的工具包堪称应用开发者的福音，这里就讨论一下这个开发套件中 <code>ViewModel</code> 到底是个什么样的存在。</p>
 <h2 id="什么是-Jetpack"><a href="#什么是-Jetpack" class="headerlink" title="什么是 Jetpack"></a>什么是 Jetpack</h2><p>先说一下 <a href="https://developer.android.com/jetpack/" target="_blank" rel="noopener">Jetpack</a>，官方对此介绍是帮助开发者专注应用的业务代码、更轻松地开发出色的应用程序的一个 Android 软件开发组件集合  </p>
 <blockquote>
 <p>Jetpack is a collection of Android software components to make it easier for you to develop great Android apps.<br>These components help you follow best practices, free you from writing boilerplate code, and simplify complex tasks, so you can focus on the code you care about.</p>
@@ -212,18 +216,25 @@
 <p>代码非常简单，只是单纯的修改了这个两个更新数据的方法的修饰，暴露给了开发者调用<br>当我们需要改变数据的时候只需要调用一下 <code>postValue</code> 方法就可以通知视图订阅来更新视图显示的内容和状态了，就像 <strong>React</strong> 中 对 <code>props</code> 和 <code>stat</code> 赋值一样简单</p>
 <p>所以 … 赶紧开始拥抱、以及享受 <strong>ViewModel</strong> + <strong>LiveData</strong> 带来的便捷吧</p>
 
+    </div>
+
+    
+
+    
+        <div class="post-tags">
+            <i class="fa fa-tags" aria-hidden="true"></i>
+            <a href="/tags/Android/">#Android</a>
         </div>
     
 
+    <!-- Comments -->
+    
+
 </div>
-            
         </section>
+
     </div>
 </div>
-
-
-
-
 
 
 </div>
