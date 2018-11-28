@@ -3,13 +3,13 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Hexo
-subtitle:
-description:
+title: Coco SAMA 的铲屎官
+subtitle: Alvince
+description: 这是个看心情随缘更新的博客
 keywords:
-author: John Doe
-language:
-timezone:
+author: 杨小咩
+language: zh_CN
+timezone: Asia/Shanghai
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
