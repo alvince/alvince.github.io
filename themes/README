@@ -1,0 +1,5 @@
+Current depends on https://github.com/probberechts/hexo-theme-cactus  
+
+```bash
+$ git clone https://github.com/probberechts/hexo-theme-cactus.git themes/cactus
+```

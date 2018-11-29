@@ -74,7 +74,7 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 #theme: landscape
-theme: alpha-dust
+theme: cactus
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -82,3 +82,7 @@ deploy:
   type: git
   repo: git@github.com:alvince/alvince.github.io.git
   branch: gh-pages
+
+#cactus
+theme_config:
+  colorscheme: light
