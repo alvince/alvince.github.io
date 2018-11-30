@@ -4,11 +4,11 @@
 
 # Site
 title: Coco SAMA 的铲屎官
-subtitle: Alvince
+subtitle: 大兄弟要不要传个火
 description: 这是个看心情随缘更新的博客
 keywords:
 author: 杨小咩
-language: zh_CN
+language: zh-CN
 timezone: Asia/Shanghai
 
 # URL
@@ -74,7 +74,7 @@ pagination_dir: page
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
 #theme: landscape
-theme: cactus
+theme: next
 
 # Deployment
 ## Docs: https://hexo.io/docs/deployment.html
@@ -82,7 +82,3 @@ deploy:
   type: git
   repo: git@github.com:alvince/alvince.github.io.git
   branch: gh-pages
-
-#cactus
-theme_config:
-  colorscheme: light
