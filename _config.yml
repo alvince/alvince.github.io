@@ -81,4 +81,4 @@ theme: next
 deploy:
   type: git
   repo: git@github.com:alvince/alvince.github.io.git
-  branch: gh-pages
+  branch: master
