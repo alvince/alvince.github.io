@@ -8,7 +8,7 @@ subtitle: Alvince
 description: 这是个看心情随缘更新的博客
 keywords:
 author: 杨小咩
-language: zh_CN
+language: zh-CN
 timezone: Asia/Shanghai
 
 # URL
@@ -82,7 +82,3 @@ deploy:
   type: git
   repo: git@github.com:alvince/alvince.github.io.git
   branch: gh-pages
-
-#cactus
-theme_config:
-  colorscheme: light

@@ -15,9 +15,8 @@ direction: ltr
 # languages/*.yml
 nav:
   home: /
-#  about: /about/
-  Articles: /archives/
-  Tags: /tags
+  articles: /archives/
+  tags: /tags/
   projects: https://github.com/alvince?tab=repositories 
 
 
@@ -29,7 +28,7 @@ social_links:
   github: http://github.com/alvince
 #  twitter: /
 #  facebook: /
-#  linkedin: /
+  linkedin: http://www.linkedin.com/in/%E6%9D%A8-%E5%BC%A0-43203710a/
   mail: mailto:alvince.zy@gmail.com
 
 # Customize the overview with displaying a tagcloud on the index page.
@@ -90,7 +89,7 @@ favicon:
 # Set the color scheme.
 # Available color schemes are 'dark', 'light', 'classic' and 'white'.
 # Alternatively, add your own custom color scheme to source/css/_colors.
-colorscheme: dark
+colorscheme: classic
 
 # Maximal width of the page in rem units.
 page_width: 56
