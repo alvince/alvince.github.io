@@ -82,3 +82,6 @@ deploy:
   type: git
   repo: git@github.com:alvince/alvince.github.io.git
   branch: gh-pages
+
+### Hexo-all-mimifier
+all_minifier: true
