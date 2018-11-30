@@ -5,6 +5,7 @@ tag: Android
 ---
 
 `Android` 开发近年越来越趋于成熟稳定，很多第三方组件也越来越完善，上半年 `Google` 爸爸发布了名为 `Jetpack` 的工具包堪称应用开发者的福音，这里就讨论一下这个开发套件中 `ViewModel` 到底是个什么样的存在。
+<!-- more -->
 
 ## 什么是 Jetpack
 
