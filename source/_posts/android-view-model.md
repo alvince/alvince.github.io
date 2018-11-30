@@ -198,47 +198,47 @@ class SampleActivity : AppCompatActivity() {
 这里简单看一下 `LiveData` 的代码
 ```Java
 /**
-     * Posts a task to a main thread to set the given value. So if you have a following code
-     * executed in the main thread:
-     * <pre class="prettyprint">
-     * liveData.postValue("a");
-     * liveData.setValue("b");
-     * </pre>
-     * The value "b" would be set at first and later the main thread would override it with
-     * the value "a".
-     * <p>
-     * If you called this method multiple times before a main thread executed a posted task, only
-     * the last value would be dispatched.
-     *
-     * @param value The new value
-     */
-    protected void postValue(T value) {
-        boolean postTask;
-        synchronized (mDataLock) {
-            postTask = mPendingData == NOT_SET;
-            mPendingData = value;
-        }
-        if (!postTask) {
-            return;
-        }
-        ArchTaskExecutor.getInstance().postToMainThread(mPostValueRunnable);
+ * Posts a task to a main thread to set the given value. So if you have a following code
+ * executed in the main thread:
+ * <pre class="prettyprint">
+ * liveData.postValue("a");
+ * liveData.setValue("b");
+ * </pre>
+ * The value "b" would be set at first and later the main thread would override it with
+ * the value "a".
+ * <p>
+ * If you called this method multiple times before a main thread executed a posted task, only
+ * the last value would be dispatched.
+ *
+ * @param value The new value
+ */
+protected void postValue(T value) {
+    boolean postTask;
+    synchronized (mDataLock) {
+        postTask = mPendingData == NOT_SET;
+        mPendingData = value;
     }
+    if (!postTask) {
+        return;
+    }
+    ArchTaskExecutor.getInstance().postToMainThread(mPostValueRunnable);
+}
 
-    /**
-     * Sets the value. If there are active observers, the value will be dispatched to them.
-     * <p>
-     * This method must be called from the main thread. If you need set a value from a background
-     * thread, you can use {@link #postValue(Object)}
-     *
-     * @param value The new value
-     */
-    @MainThread
-    protected void setValue(T value) {
-        assertMainThread("setValue");
-        mVersion++;
-        mData = value;
-        dispatchingValue(null);
-    }
+/**
+ * Sets the value. If there are active observers, the value will be dispatched to them.
+ * <p>
+ * This method must be called from the main thread. If you need set a value from a background
+ * thread, you can use {@link #postValue(Object)}
+ *
+ * @param value The new value
+ */
+@MainThread
+protected void setValue(T value) {
+    assertMainThread("setValue");
+    mVersion++;
+    mData = value;
+    dispatchingValue(null);
+}
 ```
 可以看出 LiveData 通过设置 value 来驱动数据变化事件，内部通过分发新的 data 通知到订阅者（通常是UI界面的数据渲染代码）  
 这里有两个相关的方法：`setValue` 以及 `postValue`  
