@@ -82,7 +82,7 @@ theme: next
 deploy:
   type: git
   repo: git@github.com:alvince/alvince.github.io.git
-  branch: master
+  branch: gh-pages
 
 ### Hexo-all-mimifier
 all_minifier: true
