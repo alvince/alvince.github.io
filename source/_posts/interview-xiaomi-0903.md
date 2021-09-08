@@ -1,7 +1,7 @@
 ---
 title: Java 局部变量内存占用的问题
 date: 2021-09-03
-categoreis:
+categories:
 - 随笔
 tags:
 - Java
